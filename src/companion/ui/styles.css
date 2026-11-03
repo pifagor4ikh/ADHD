@@ -1,0 +1,8 @@
+:root { color-scheme: dark; font-family: "Segoe UI", sans-serif; background: #14161d; color: #eeeef4; }
+body { margin: 0; }
+main { max-width: 640px; margin: 0 auto; padding: 52px 36px; }
+h1 { font-size: 38px; letter-spacing: -1px; margin: 12px 0; }
+p { color: #acafbf; line-height: 1.6; }
+.eyebrow { color: #b6a4ff; font-size: 13px; }
+section { margin-top: 32px; padding: 24px; border: 1px solid #343747; border-radius: 16px; background: #1c1f29; }
+.status { color: #9de0bc; }

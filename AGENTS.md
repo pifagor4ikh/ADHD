@@ -53,7 +53,7 @@
 ## Текущее состояние
 
 - Проект: Claude Brainrot; публичный репозиторий `pifagor4ikh/CLAUDE-BRAINROT`, локальная папка остаётся `E:\ADHD`.
-- Выполнена Phase 0. Стек следующей фазы: TypeScript + Electron + HTML/CSS; код приложения ещё не реализован. Решения и ограничения — в `docs/ARCHITECTURE.md`.
+- Выполнена Phase 0; начата Phase 1, задача #3: минимальное окно Electron + TypeScript + HTML/CSS. Видеодвижок ещё не реализован. Решения и ограничения — в `docs/ARCHITECTURE.md`.
 - Работать строго по `ROADMAP.md`: после каждого этапа обновить чеклисты, показать результат и остановиться до следующей команды. Не переходить к Phase 1 автоматически.
 - Перед интеграциями читать `brainrot-integration-research`; перед медиа — `brainrot-media-workflow`; перед проверками — `brainrot-plugin-verification`. Создавать и проверять новые skills для повторяемых специализированных задач, если подходящих нет.
 - Навыки редактировать в `skills/`, затем синхронизировать: `python -B scripts/sync_skills.py`. Копии в `.agents/skills/` и `.claude/skills/` не редактировать вручную.
@@ -61,4 +61,6 @@
 - Не выдумывать host API: приоритет встроенного UI, но работоспособность видео и hooks проверять на реальных desktop-версиях. Не модифицировать внутренние файлы хостов.
 - Playback и controls не должны обращаться к LLM. MCP и отдельный background service добавлять только при доказанной технической необходимости.
 - Видео — только с проверенными правами и способом загрузки; игровые записи разрешено импортировать. Не подменять отсутствие лицензии перекодированием или случайным fallback.
-- Команд установки/запуска приложения пока нет. Добавить после реализации Phase 1.
+- Node 24.22.1; установка: `./scripts/setup.ps1` (npm 11.6.2 в `.TMP/tooling`, зависимости в `.TMP/deps`, Electron 45.2.2, TypeScript 7.0.2). Не запускать `npm ci` в корне. Обновление lockfile: `./scripts/setup.ps1 -UpdateLock`, затем обычная установка.
+- Запуск: `node scripts/tasks.mjs dev`; проверки: `node scripts/tasks.mjs typecheck`, `node scripts/tasks.mjs build`, `node --test tests/runtime.test.mjs`, `node scripts/tasks.mjs smoke`. Сначала build, затем unit-тесты. Smoke открывает реальное окно и пишет evidence в `.TMP/brainrot`.
+- GitHub Actions: обязательный `Windows checks`; `main` — через PR с актуальной базой и успешным CI, squash automerge разрешён. Следующие задачи Phase 1 автоматически не начинать.

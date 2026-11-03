@@ -1,0 +1,21 @@
+{
+  "name": "claude-brainrot",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local Brainrot companion for Windows",
+  "license": "MIT",
+  "engines": { "node": ">=24.22.1 <25" },
+  "packageManager": "npm@11.6.2",
+  "scripts": {
+    "dev": "node scripts/tasks.mjs dev",
+    "build": "node scripts/tasks.mjs build",
+    "typecheck": "node scripts/tasks.mjs typecheck",
+    "test": "node --test tests/runtime.test.mjs",
+    "test:desktop": "node scripts/tasks.mjs smoke"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "electron": "45.2.2",
+    "typescript": "7.0.2"
+  }
+}
