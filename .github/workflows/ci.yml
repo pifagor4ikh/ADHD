@@ -1,0 +1,59 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  windows:
+    name: Windows checks
+    runs-on: windows-2025
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .TMP/npm-cache
+            .TMP/electron-cache
+            .TMP/tooling
+          key: windows-deps-${{ hashFiles('package-lock.json', 'scripts/setup.ps1', '.node-version') }}
+      - name: Install locked dependencies
+        run: ./scripts/setup.ps1
+      - name: Typecheck
+        run: node scripts/tasks.mjs typecheck
+      - name: Build
+        run: node scripts/tasks.mjs build
+      - name: Unit tests
+        run: node --test tests/runtime.test.mjs
+      - name: Real Electron window smoke test
+        run: node scripts/tasks.mjs smoke
+      - name: Skill discovery
+        run: python -B scripts/sync_skills.py --check
+      - name: Skill tests
+        run: python -B -m unittest discover -s tests -v
+      - name: Check tracked files stayed unchanged
+        run: git diff --exit-code
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: windows-desktop-evidence
+          path: |
+            .TMP/brainrot/smoke.*
+            .TMP/brainrot/logs
+          retention-days: 7

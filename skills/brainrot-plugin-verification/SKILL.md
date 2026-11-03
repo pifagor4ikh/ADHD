@@ -8,3 +8,5 @@ Read `references/test-matrix.md`. Inspect `ROADMAP.md` and applicable project in
 Run `python -B -m unittest discover -s tests -v` for skill tooling changes. At runtime phases add checks for observable behavior, not implementation details. Distinguish unit tests, renderer tests, packaged Windows checks and actual host integration. Simulated hooks do not establish desktop compatibility.
 
 Report test commands, outcomes and untested surfaces. Update phase checklists only when evidence meets the written criterion. Stop after completing each phase. Do not publish releases or install host hooks merely to satisfy a packaging test.
+
+For the Electron companion, read `references/electron-checks.md` for project-local setup and real Windows smoke checks.
