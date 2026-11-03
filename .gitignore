@@ -13,6 +13,7 @@ Desktop.ini
 .vscode/
 
 # Temporary files and logs
+.TMP/
 *.log
 *.tmp
 *.swp
