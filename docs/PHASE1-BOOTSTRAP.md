@@ -36,9 +36,11 @@ Electron package требует development Node >=22.12.0, TypeScript >=16.20.0
 - `python -B scripts/sync_skills.py --check`: копии актуальны.
 - `python -B -m unittest discover -s tests -v`: 4 теста пройдены.
 - `skill-creator/scripts/quick_validate.py skills/brainrot-plugin-verification`: skill валиден; workflow Electron добавлен в существующий навык и синхронизирован.
+- Чистая копия tracked исходников в `.TMP/clean checkout`: отдельный `npm ci`, typecheck/build, unit-тест, реальное окно, skill sync и 4 Python-теста прошли. Для повторной установки использован предварительно проверенный Electron archive cache; загрузка с нуля независимо прошла в CI.
+- [GitHub Actions run 41742750884](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/actions/runs/41742750884): все шаги `Windows checks` прошли на чистом Windows runner, включая реальное окно и отсутствие изменений tracked файлов. [PR #24](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/pull/24) автоматически слит, issue #3 закрыта.
 
 ## CI и границы
 
-GitHub Actions `Windows checks` проверяет lockfile install, typecheck, build, unit-тест, реальное окно и skills; screenshot/версии/логи сохраняются как короткоживущий artifact. `main` защищена PR, обязательной проверкой на актуальной базе, линейной историей и закрытием обсуждений; запреты force push/удаления и проверки применяются к администраторам. Automerge включён в репозитории; для PR #3 используется squash после CI, без обязательного reviewer approval.
+GitHub Actions `Windows checks` проверяет lockfile install, typecheck, build, unit-тест, реальное окно и skills; screenshot/версии/логи сохраняются как короткоживущий artifact. `main` защищена PR, обязательной проверкой на актуальной базе, линейной историей и закрытием обсуждений; запреты force push/удаления и проверки применяются к администраторам. Automerge включён в репозитории; для PR задачи #3 используется squash после CI, без обязательного reviewer approval.
 
 Минимальная целевая платформа: Windows 10 22H2 x64 + PowerShell 7; фактически локально проверена только Windows 11 x64. Windows ARM, macOS/Linux, packaged installer, codecs, три видеопотока, offline playback, производительность и desktop-хосты не проверены и не входят в #3. После этой задачи работа останавливается до следующей команды.
