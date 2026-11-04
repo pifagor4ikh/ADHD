@@ -42,7 +42,7 @@ async function cached(path, hash, algorithm) {
   return digest.digest("hex") === hash;
 }
 
-function verifyVideo(path, format) {
+export function verifyVideo(path, format) {
   const probe = spawnSync("ffprobe", [
     "-v", "error", "-protocol_whitelist", "file", "-show_entries",
     "format=format_name,duration:stream=codec_type", "-of", "json", path,
@@ -60,6 +60,7 @@ function verifyVideo(path, format) {
     "-i", path, "-map", "0:v:0", "-an", "-f", "null", "-",
   ], { stdio: "ignore", timeout: 45_000, windowsHide: true });
   if (decode.error || decode.status !== 0) throw new Error("FFmpeg could not decode video");
+  return duration;
 }
 
 export async function downloadAsset(asset, allowedHosts, cache, request = fetch, headers = {}) {
