@@ -11,3 +11,5 @@
 - [Roadmap](ROADMAP.md)
 - [Архитектура](docs/ARCHITECTURE.md)
 - [Навыки разработки](docs/SKILLS.md)
+
+- [Загрузка разрешённых клипов в локальный кеш](docs/CLIP-DOWNLOADS.md)
