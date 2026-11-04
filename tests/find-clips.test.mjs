@@ -33,7 +33,8 @@ test("discovers only approved files, deduplicates and generates a catalog", asyn
       { index: 2, imageinfo: [{ ...info, extmetadata: { ...info.extmetadata, Restrictions: { value: "blocked" } } }] },
       { index: 3, imageinfo: [{ ...info, extmetadata: { Artist: { value: "Creator" } } }] },
       { index: 4, title: "File:Soap cutting.webm", imageinfo: [info] },
-      { index: 5, imageinfo: [info] },
+      { index: 5, title: "File:Soap cutting copy.webm", imageinfo: [info] },
+      { index: 6, title: "File:Unrelated shower.webm", imageinfo: [{ ...info, sha1: "a".repeat(40) }] },
     ] } });
   };
   const result = await buildLibrary("Soap Cutting", 2, library, request);

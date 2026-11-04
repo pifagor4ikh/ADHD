@@ -69,6 +69,8 @@ export async function buildLibrary(category, count, library, request = fetch, re
     if (result.error) throw new Error("Wikimedia search returned an API error");
     const pages = (result.query?.pages ?? []).sort((a, b) => a.index - b.index);
     for (const page of pages) {
+      const title = (page.title ?? "").toLowerCase().replace(/[^\p{L}\p{N}]+/gu, " ");
+      if (!(" " + title + " ").includes(" " + query.toLowerCase() + " ")) continue;
       const asset = candidate(page, category);
       if (!asset || seen.has(asset.sha1)) continue;
       seen.add(asset.sha1);
