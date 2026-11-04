@@ -61,7 +61,9 @@
       "mime": "video/webm",
       "sha1": "bbfd89b31d481f1bd69a1db17c025222a9eff339",
       "verifiedSha256": "ef239d49e4d90e6e8d56efddc692b420d4a0f74ad9c48fb23d43031f04070129",
-      "durationSeconds": 28.475
+      "durationSeconds": 28.475,
+      "repositoryFile": "media/starter/kinetic-sand-cutting.webm",
+      "licenseReview": "CC BY 3.0 declared on Commons; Commons reviewer verification pending"
     },
     {
       "title": "File:Pottery making process.webm",
