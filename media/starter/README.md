@@ -1,5 +1,7 @@
 # Стартовые ролики Brainrot
 
+Для первой настройки #7 одобрены только три pressure washing файла: [каталог с точными SHA-256](../../docs/starter-clips.json), [проверка прав и решения по категориям](../../docs/STARTER-MEDIA.md). Остальные файлы ниже относятся к прежней экспериментальной подборке.
+
 Шесть файлов WebM скопированы без изменений. Источники, авторы, лицензии и контрольные суммы записаны в [каталоге](../../docs/satisfying-clips.json). Для каждого файла действует лицензия из списка ниже.
 
 - `pressure-washing-stone.webm` — Pondguru, монтаж Veikk0.ma. [Источник](https://commons.wikimedia.org/wiki/File:K%C3%A4rcher_K3.550_pressure_washing_using_a_Dirtblaster_wand_attachment.webm) · [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/)

@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 
 const limit = 32 * 1024 * 1024;
 const formats = { "video/mp4": "mp4", "video/webm": "webm" };
+const defaultHeaders = { "user-agent": "ClaudeBrainrot/0.1 (https://github.com/pifagor4ikh/CLAUDE-BRAINROT)" };
 
 function https(value) {
   const url = new URL(value);
@@ -63,7 +64,7 @@ export function verifyVideo(path, format) {
   return duration;
 }
 
-export async function downloadAsset(asset, allowedHosts, cache, request = fetch, headers = {}) {
+export async function downloadAsset(asset, allowedHosts, cache, request = fetch, headers = defaultHeaders) {
   const url = validate(asset, allowedHosts);
   const format = formats[asset.mime];
   await mkdir(cache, { recursive: true });

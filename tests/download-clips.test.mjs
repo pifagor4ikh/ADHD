@@ -27,6 +27,7 @@ test("rejects unapproved sources and invalid responses, then reuses matching off
   await assert.rejects(run(async () => new Response("<html>error</html>")), /expected type/);
   await assert.rejects(run(async (url, options) => {
     assert.equal(options.redirect, "error");
+    assert.match(options.headers["user-agent"], /ClaudeBrainrot.*https:\/\/github.com\/pifagor4ikh\/CLAUDE-BRAINROT/);
     return new Response("wrong bytes", { headers: { "content-type": "video/mp4" } });
   }), /checksum mismatch/);
   assert.deepEqual(await readdir(cache), []);
