@@ -33,4 +33,6 @@ Windows 11 x64, Electron 45.2.2 / Chromium 156.0.8078.80 / embedded Node 24.22.2
 
 Evidence: `.TMP/brainrot/smoke.json`, `smoke.png`, `fixtures/provenance.json`; скриншот просмотрен. Один запуск рядом с dev-окном сообщил о занятом Chromium disk cache и завершился успешно; перед smoke следует закрывать dev-окно.
 
-Smoke подставляет результат выбора на стороне main при явном флаге `--brainrot-smoke`; renderer использует настоящий IPC, protocol и decoder. Native dialog этим не покрыт. Дополнительная UI-проверка остановлена пользователем через Escape; успешный ручной выбор и отмена системного диалога не заявляются. Issue не закрывается автоматически. Установщик, packaged codecs, host-интеграции, общий playback core, loop, shuffle и performance baseline за пределами #4.
+Smoke подставляет результат выбора на стороне main при явном флаге `--brainrot-smoke`; renderer использует настоящий IPC, protocol и decoder. Системный диалог отдельно проверен через Windows UI в обычном `dev` без подмены: кнопка импорта открыла native dialog, выбор `Ролик 1 own.webm` по полному пути с Unicode/пробелами загрузил реальные кадры и статус «Готово к просмотру». Повторный диалог отменён через Escape; имя, кадр и статус прежнего видео сохранились. Evidence: `.TMP/brainrot/native-import.png` и `native-import.json`. Первую попытку проверки пользователь прервал, но после команды продолжить сценарий успешно завершён.
+
+Установщик, packaged codecs, host-интеграции, общий playback core, loop, shuffle и performance baseline за пределами #4.
