@@ -1,103 +1,30 @@
 # Claude Brainrot — roadmap
 
-Правило выполнения: каждый этап — отдельная проверяемая итерация и логический коммит. После этапа показать результат и **остановиться до следующей команды**. Галочка означает выполненную проверку, а не обещание. Phase 1 начата с задачи #3; весь этап ещё не завершён.
+Каждый хост проходит этапы по своим результатам. После этапа показать доказательства, обновить чеклист и дождаться следующей команды. [Общий GitHub issue](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/1).
 
-## Phase 0 — Research & Architecture
+## Phase 0 — Проверить встроенный UI
 
-Зависимости: требования проекта и актуальная официальная документация.
+- [ ] Claude Code в Desktop на Windows — проверить поддерживаемую панель, воспроизведение локального видео и способ вызова ([#11](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/11)).
+- [ ] Codex desktop на Windows — проверить те же возможности именно в Codex ([#14](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/14)).
 
-- [x] Исследовать Desktop Claude/Codex, Windows, SDK, встроенные панели и lifecycle events.
-- [x] Отделить подтверждённые API от требующих проверки native-video сценариев.
-- [x] Выбрать общий playback core + Electron companion + отдельные host adapters.
-- [x] Проверить доступные skills: `openai-docs`, `skill-creator`; специализированных навыков Brainrot в доступном каталоге нет, создать собственные.
-- [x] Создать 3 специализированных skills с references и поддерживаемыми project discovery paths.
-- [x] Проверить frontmatter, воспроизводимую синхронизацию и негативные случаи; независимая проверка поведения навыков.
-- [x] Записать источники, ограничения, структуру, критерии последующих этапов.
-- [x] Зафиксировать отсутствие полного лицензированного стартового набора как gate Phase 2.
+Для каждого хоста зафиксировать версию, доступную раскладку, доступ к локальному медиа, ограничения и доказательства. Предпочтение — слева, справа и снизу. Ближайший вариант — одна встроенная панель с тремя роликами. Phase 1 для хоста открывается после подтверждения подходящей поверхности. Если её нет, зафиксировать блокер.
 
-Готовность: документы и навыки проверены; реальные runtime-интеграции не выдаются за выполненные. Результаты: [архитектура](docs/ARCHITECTURE.md), [исследования](docs/research/claude.md), [skills](docs/SKILLS.md), [проверки](docs/PHASE0-VALIDATION.md).
+## Phase 1 — Минимальные встроенные прототипы
 
-## Phase 1 — Video Engine
+- [ ] Claude Code ([#12](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/12)).
+- [ ] Codex ([#15](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/15)).
 
-Зависит от Phase 0 и отдельной команды пользователя. Перед реализацией прочитать `brainrot-plugin-verification` и `brainrot-media-workflow`.
+Для каждого прототипа проверить три одновременных локальных видео, loop, mute по умолчанию и простое ручное управление в подтверждённой раскладке.
 
-- [x] Зафиксировать поддерживаемые версии Node/Electron/TypeScript и lockfile; настроить кеши/outputs в `.TMP` (задача #3, [проверки](docs/PHASE1-BOOTSTRAP.md)).
-- [x] Создать общий playback core, обычное Electron-окно и ограниченный preload/protocol (#3–#5; [проверки playback](docs/PHASE1-PLAYBACK.md)).
-- [x] Подготовить три коротких собственных тестовых видео в `.TMP`, проверить их происхождение (#4, [отчёт](docs/PHASE1-MEDIA.md)).
-- [x] Реализовать библиотеку выбранных файлов с непрозрачными ID; проверить Range/seeking, Unicode/пробелы, missing/unsupported/corrupt и traversal в реальном Electron (#4). Системный диалог импорта и отмена проверены через Windows UI, см. отчёт.
-- [x] Реализовать 3 независимых потока, muted по умолчанию, loop, pause/resume, next/shuffle и локальный import (#5).
-- [ ] Проверить missing/corrupt/unsupported video, отсутствие контента и независимость ошибок слотов.
-- [ ] Проверить state transitions и реальное движение currentTime/loop на Windows, offline.
-- [ ] Записать CPU/GPU/RAM baseline и ограничения проверенной машины; без host hooks/downloader.
+## Phase 2 — Вызов и управление
 
-Критерий: три видео действительно играют одновременно и управляются независимо без сети/LLM; проверенная сборка и отчёт. Не объявлять desktop plugin integration готовой.
+- [ ] Добавить показ/скрытие, `off`, `next`, `shuffle` через `/brainrot` или ближайшие действия хоста. Автопереключение примерно каждые 60 секунд, настройка интервала опциональна. При `off` останавливаются видео и таймер ([#17](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/17)).
 
-## Phase 2 — Video Downloader
+## Phase 3 — Первая загрузка и кеш
 
-Зависит от Phase 1. Прочитать media skill; продолжать rights research, не подменять его наличием URL.
+- [ ] Найти разрешённые источники и проверить права и способ доставки для каждого ролика ([#7](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/7)).
+- [ ] Добавить первую загрузку, повторное использование кеша офлайн и импорт локальных файлов при недоступности разрешённого источника ([#8](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/8)).
 
-- [ ] Подобрать и одобрить источники: soap cutting, pressure washing, игровой слот с собственной записью/явными правами; Minecraft optional.
-- [ ] Зафиксировать per-asset license/author/attribution, способы download/transform/distribution, URL, hash/size и mirrors.
-- [ ] Решить текущую нехватку автоматического стартового набора; импорт разрешён для игр, но не закрывает требование автоматического наполнения остальных категорий.
-- [ ] Реализовать bounded downloader, local cache, atomic promotion и retries; не добавлять MCP без необходимости.
-- [ ] Проверить FFprobe + полное декодирование; нормализовать видео; документировать FFmpeg источник/хеш/лицензию.
-- [ ] Обеспечить first-run автоматическую загрузку доступного разрешённого набора и честный fallback.
-- [ ] Проверить offline/warm cache, недоступный источник, HTML вместо видео, corruption, oversized file и отказ обработки.
+## Phase 4 — Проверки и выпуск
 
-Критерий: воспроизводимая чистая настройка с разрешёнными файлами и проверенным fallback. Если нужные права/категории не найдены — статус этапа «не завершён», явное решение с пользователем; не отмечать фиктивное выполнение.
-
-## Phase 3 — Claude Integration
-
-Зависит от Phase 1/2 и реального Claude Desktop Local Windows. Прочитать integration и verification skills.
-
-- [ ] Зафиксировать версию Desktop и bundled runtime; проверить ограничения WSL/администратора.
-- [ ] Выполнить native UI spike на актуальных `/plugin-types`: video primitives, local content, три потока. Если невозможно, записать причину fallback.
-- [ ] Подготовить поддерживаемый Claude package; проверить install/uninstall, skills discovery.
-- [ ] Реализовать mod control pane и activity adapter либо подтверждённые command hooks.
-- [ ] Проверить реальные start/complete/abort/error/permission wait, subagent и параллельные сессии.
-- [ ] Проверить IPC, safe failure, отсутствие дополнительных модельных вызовов и изменения host-файлов.
-
-Критерий: на реальной установке агент управляет видео; отчёт с версиями и скриншотами в `.TMP`, устойчивый manual fallback. Без установленного хоста этап остаётся непроверенным.
-
-## Phase 4 — Codex Integration
-
-Зависит от Phase 3 и реального Codex Desktop Windows; общий движок уже готов.
-
-- [ ] Начать с MCP conversation-panel spike: Codex mode, local media/CSP, 3 videos, autoplay, смена чатов, долгоживущая панель, controls без turn.
-- [ ] При успехе выбрать embedded adapter и документировать необходимый MCP transport; иначе обосновать companion.
-- [ ] Подготовить manual desktop package, проверить supported install и review/trust hooks.
-- [ ] Нормализовать реальные activity events, корректно обработать interrupt/waiting/session end и параллельные turn IDs.
-- [ ] Проверить sandbox/IPC и no-model-call управление; cloud не считать local mode.
-- [ ] Подтвердить переиспользование общего playback core, install/uninstall и manual fallback.
-
-Критерий: фактическая проверка в Codex с точными версиями и честным итогом native panel experiment. Hooks package не публикуется в неподдерживаемый public directory.
-
-## Phase 5 — UX & Configuration
-
-Зависит от обоих адаптеров; прочитать verification skill.
-
-- [ ] Минимальный UI: 3 видео, mute, видимые pause/resume/next/shuffle/import, источники и статус auto/manual.
-- [ ] Настройки категорий/плейлистов, сохранение в project `.TMP`, приоритет ручной паузы.
-- [ ] Drag/resize, восстановление размера/позиции, доступность клавиатурой.
-- [ ] Проверить документированное следование выбранному host window на Windows: DPI, несколько мониторов, minimize/close и смена окна. Не называть ручную позицию автоматической привязкой.
-- [ ] Автозапуск/автопауза при достоверных событиях; fallback при потере связи.
-- [ ] Зафиксировать Windows support matrix; macOS/Linux отмечать только после фактических проверок.
-
-Критерий: понятные controls и стабильная проверенная привязка либо явно описанное ограничение; ни одна настройка не создаёт фоновые LLM turns.
-
-## Phase 6 — Release
-
-Зависит от всех прошлых этапов, включая права на стартовый контент.
-
-- [ ] E2E на чистой Windows, installer/uninstaller, пути с пробелами, offline и восстановление после сбоя.
-- [ ] Поддерживаемая установка Claude/Codex, раздельные пакеты при разных manifest/API ограничениях.
-- [ ] Доставка media отдельно от Git, notices/attribution и лицензии бинарников; source/license audit.
-- [ ] Документация, troubleshooting, privacy, performance baseline и точная compatibility matrix.
-- [ ] Проверить отсутствие secrets/cache/крупного media/ИИ-атрибуции в релизных метаданных.
-- [ ] Подготовить version/tag/release assets и GitHub release notes; публикация только в разрешённой задаче.
-
-Критерий: новый пользователь устанавливает и удаляет проект по инструкции, получает разрешённый контент, запускает три видео; все заявленные интеграции подтверждены, ограничения явно видны.
-
-## Что нужно для старта Phase 1
-
-Следующая команда пользователя; Node/npm и pinned dev dependencies; место в `.TMP` для dependency cache/builds/test fixtures; 3 тестовых видео собственной генерации/съёмки; Windows-машина для packaged playback. API-ключи, MCP и запущенный AI-агент не требуются. Реальные установленные хосты понадобятся в Phase 3/4.
+- [ ] Проверить установку, использование и удаление в каждом хосте на чистой установке. Подготовить отдельные пакеты **Brainrot for Claude Code** и **Brainrot for Codex**, инструкции, проверенные версии и ограничения ([#23](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/23)).
