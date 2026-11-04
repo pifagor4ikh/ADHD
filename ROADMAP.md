@@ -4,6 +4,8 @@
 
 ## Phase 0 — Проверить встроенный UI
 
+[Срез проверок и ручные шаги](docs/research/embedded-ui-phase0.md).
+
 - [ ] Claude Code в Desktop на Windows — проверить поддерживаемую панель, воспроизведение локального видео и способ вызова ([#11](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/11)).
 - [ ] Codex desktop на Windows — проверить те же возможности именно в Codex ([#14](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/14)).
 
@@ -14,6 +16,8 @@
 - [ ] Claude Code ([#12](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/12)).
 - [ ] Codex ([#15](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/15)).
 
+Локальные прототипы готовы к проверке: Claude предоставляет команду статуса, Codex отдаёт виджет по MCP stdio. Воспроизведение в desktop-хостах остаётся **UNVERIFIED**, поэтому пункты выше открыты. [Запуск и проверки](docs/PLUGIN-PROTOTYPES.md).
+
 Для каждого прототипа проверить три одновременных локальных видео, loop, mute по умолчанию и простое ручное управление в подтверждённой раскладке.
 
 ## Phase 2 — Вызов и управление
@@ -21,6 +25,8 @@
 - [ ] Добавить показ/скрытие, `off`, `next`, `shuffle` через `/brainrot` или ближайшие действия хоста. Автопереключение примерно каждые 60 секунд, настройка интервала опциональна. При `off` останавливаются видео и таймер ([#17](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/17)).
 
 ## Phase 3 — Первая загрузка и кеш
+
+CLI ищет по категории в Wikimedia Commons, скачивает подходящие оригиналы и автоматически строит каталог. На реальном запросе `pressure washing` получены три ролика. Покрытие остальных категорий и запуск из плагина остаются открыты. [Инструкция](docs/CLIP-DOWNLOADS.md).
 
 - [ ] Найти разрешённые источники и проверить права и способ доставки для каждого ролика ([#7](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/7)).
 - [ ] Добавить первую загрузку, повторное использование кеша офлайн и импорт локальных файлов при недоступности разрешённого источника ([#8](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/8)).

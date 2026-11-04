@@ -1,0 +1,10 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "brainrot-codex",
+  "version": "0.1.0",
+  "description": "Experimental Brainrot widget for MCP Apps hosts",
+  "mcpServers": "./mcp.json",
+  "extensions": {
+    "com.openai": { "requires_local_executor": true }
+  }
+}
