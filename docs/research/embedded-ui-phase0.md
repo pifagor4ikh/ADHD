@@ -12,7 +12,7 @@
 
 ## Codex в ChatGPT Desktop
 
-**Актуальный результат #14:** [подробный отчёт](codex-phase0-issue14.md). Обнаружен провайдер `Codex MCP Apps` без открытых вкладок. Локальный stdio smoke прошёл, рендер и воспроизведение в Desktop остаются **UNVERIFIED**. Исследование завершено с блокером runtime-проверки; Phase 1 не открыта.
+**Промежуточный результат #14:** [подробный отчёт](codex-phase0-issue14.md). Обнаружен провайдер `Codex MCP Apps` без открытых вкладок. Локальный stdio smoke прошёл, рендер и воспроизведение в Desktop остаются **UNVERIFIED**. Runtime-проверка заблокирована, issue открыт; Phase 1 не открыта.
 
 [OpenAI Docs о MCP UI](https://developers.openai.com/plugins/build/chatgpt-ui) описывает встроенный iframe в ChatGPT. [Quickstart](https://developers.openai.com/plugins/build/app-quickstart) отдельно описывает сервер для ChatGPT и Codex и пример UI в ChatGPT. Применимость примера к установленному режиму Codex требует проверки. Историческую ссылку на conversation panel не считаем подтверждением трёх слотов вокруг чата.
 
