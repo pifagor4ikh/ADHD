@@ -31,6 +31,7 @@ test("three local clips rotate at 60 seconds and Off releases media", async () =
   let tick;
   runInNewContext(script, {
     window,
+    Math: { floor: Math.floor, random: () => 0 },
     ResizeObserver: class {
       observe() {}
       disconnect() {}
@@ -62,14 +63,14 @@ test("three local clips rotate at 60 seconds and Off releases media", async () =
   picker.files = ["a", "b", "c", "d"];
   picker.change();
   const sources = () => videos.map(video => video.src);
-  assert.deepEqual(sources(), ["blob:a", "blob:b", "blob:c"]);
+  assert.deepEqual(sources(), ["blob:b", "blob:c", "blob:d"]);
   assert.ok(videos.every(video => video.muted));
   tick();
-  assert.deepEqual(sources(), ["blob:b", "blob:c", "blob:d"]);
-  next.click();
   assert.deepEqual(sources(), ["blob:c", "blob:d", "blob:a"]);
+  next.click();
+  assert.deepEqual(sources(), ["blob:d", "blob:a", "blob:b"]);
   off.click();
   assert.equal(tick, undefined);
   assert.ok(videos.every(video => video.paused && !video.src));
-  assert.deepEqual(revoked, ["blob:a", "blob:b", "blob:c", "blob:d"]);
+  assert.deepEqual(revoked.sort(), ["blob:a", "blob:b", "blob:c", "blob:d"]);
 });

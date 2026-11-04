@@ -45,6 +45,10 @@ picker.addEventListener("change", () => {
   }
   stop();
   clips = files.map(file => URL.createObjectURL(file));
+  for (let index = clips.length - 1; index > 0; index--) {
+    const other = Math.floor(Math.random() * (index + 1));
+    [clips[index], clips[other]] = [clips[other], clips[index]];
+  }
   next.disabled = off.disabled = false;
   status.textContent = "Switching every 60 seconds.";
   advance();

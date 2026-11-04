@@ -12,4 +12,4 @@
 - [Архитектура](docs/ARCHITECTURE.md)
 - [Навыки разработки](docs/SKILLS.md)
 
-- [Загрузка разрешённых клипов в локальный кеш](docs/CLIP-DOWNLOADS.md)
+- [Автоматический поиск и загрузка клипов по категории](docs/CLIP-DOWNLOADS.md)

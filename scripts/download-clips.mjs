@@ -25,17 +25,19 @@ function validate(asset, allowedHosts) {
   for (const field of ["creator", "category", "permission"]) {
     if (typeof asset[field] !== "string" || !asset[field].trim()) throw new Error("Missing " + field);
   }
-  if (!/^[a-f0-9]{64}$/.test(asset.sha256)) throw new Error("Expected SHA-256 is required");
+  if (asset.sha256 !== undefined ? !/^[a-f0-9]{64}$/.test(asset.sha256) : !/^[a-f0-9]{40}$/.test(asset.sha1)) {
+    throw new Error("Expected SHA-256 or provider SHA-1 is required");
+  }
   if (!Object.hasOwn(formats, asset.mime)) throw new Error("Expected MP4 or WebM");
   return url;
 }
 
-async function cached(path, hash) {
+async function cached(path, hash, algorithm) {
   const info = await stat(path).catch(error => {
     if (error.code !== "ENOENT") throw error;
   });
   if (!info?.isFile() || info.size > limit) return false;
-  const digest = createHash("sha256");
+  const digest = createHash(algorithm);
   for await (const chunk of createReadStream(path)) digest.update(chunk);
   return digest.digest("hex") === hash;
 }
@@ -60,24 +62,26 @@ function verifyVideo(path, format) {
   if (decode.error || decode.status !== 0) throw new Error("FFmpeg could not decode video");
 }
 
-export async function downloadAsset(asset, allowedHosts, cache, request = fetch) {
+export async function downloadAsset(asset, allowedHosts, cache, request = fetch, headers = {}) {
   const url = validate(asset, allowedHosts);
   const format = formats[asset.mime];
   await mkdir(cache, { recursive: true });
-  const target = join(cache, asset.sha256 + "." + format);
-  if (await cached(target, asset.sha256)) return target;
+  const algorithm = asset.sha256 ? "sha256" : "sha1";
+  const hash = asset.sha256 ?? asset.sha1;
+  const target = join(cache, hash + "." + format);
+  if (await cached(target, hash, algorithm)) return target;
 
   const staged = join(cache, randomUUID() + ".partial");
   try {
     const signal = AbortSignal.timeout(30_000);
-    const response = await request(url, { redirect: "error", signal });
+    const response = await request(url, { redirect: "error", signal, headers });
     const mime = response.headers.get("content-type")?.split(";")[0]?.trim();
     if (response.status !== 200 || !response.body || mime !== asset.mime ||
         Number(response.headers.get("content-length")) > limit) {
       await response.body?.cancel();
       throw new Error("Source did not return a complete video of the expected type and size");
     }
-    const digest = createHash("sha256");
+    const digest = createHash(algorithm);
     let bytes = 0;
     const measure = new Transform({
       transform(chunk, encoding, callback) {
@@ -88,7 +92,7 @@ export async function downloadAsset(asset, allowedHosts, cache, request = fetch)
       },
     });
     await pipeline(Readable.fromWeb(response.body), measure, createWriteStream(staged, { flags: "wx" }), { signal });
-    if (digest.digest("hex") !== asset.sha256) throw new Error("Video checksum mismatch");
+    if (digest.digest("hex") !== hash) throw new Error("Video checksum mismatch");
     verifyVideo(staged, format);
     await rename(staged, target);
     return target;
