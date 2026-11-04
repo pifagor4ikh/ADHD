@@ -22,8 +22,9 @@
 Зависит от Phase 0 и отдельной команды пользователя. Перед реализацией прочитать `brainrot-plugin-verification` и `brainrot-media-workflow`.
 
 - [x] Зафиксировать поддерживаемые версии Node/Electron/TypeScript и lockfile; настроить кеши/outputs в `.TMP` (задача #3, [проверки](docs/PHASE1-BOOTSTRAP.md)).
-- [ ] Создать общий playback core, обычное Electron-окно и ограниченный preload/protocol.
-- [ ] Подготовить три коротких собственных тестовых видео в `.TMP`, проверить их происхождение.
+- [ ] Создать общий playback core, обычное Electron-окно и ограниченный preload/protocol. Окно (#3) и preload/protocol (#4) реализованы; общий playback core ещё не готов.
+- [x] Подготовить три коротких собственных тестовых видео в `.TMP`, проверить их происхождение (#4, [отчёт](docs/PHASE1-MEDIA.md)).
+- [x] Реализовать библиотеку выбранных файлов с непрозрачными ID; проверить Range/seeking, Unicode/пробелы, missing/unsupported/corrupt и traversal в реальном Electron (#4). Системный диалог импорта и отмена проверены через Windows UI, см. отчёт.
 - [ ] Реализовать 3 независимых потока, muted по умолчанию, loop, pause/resume, next/shuffle и локальный import.
 - [ ] Проверить missing/corrupt/unsupported video, отсутствие контента и независимость ошибок слотов.
 - [ ] Проверить state transitions и реальное движение currentTime/loop на Windows, offline.

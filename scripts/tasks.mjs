@@ -19,7 +19,7 @@ const run = (executable, args, timeout = 120_000) => {
   if (result.status !== 0) process.exit(result.status ?? 1);
 };
 const task = process.argv[2];
-if (!['build', 'typecheck', 'dev', 'smoke'].includes(task)) throw new Error('Unknown task');
+if (!['build', 'typecheck', 'dev', 'smoke', 'fixtures'].includes(task)) throw new Error('Unknown task');
 run(process.execPath, [path.join(tmp, 'deps/node_modules/typescript/bin/tsc'),
   '-p', 'tsconfig.json', ...(task === 'typecheck' ? ['--noEmit'] : [])]);
 if (task === 'typecheck') process.exit(0);
@@ -30,4 +30,4 @@ const require = createRequire(path.join(tmp, 'deps/package.json'));
 if (!existsSync(path.join(tmp, 'deps/node_modules/electron/dist/electron.exe'))) {
   throw new Error('Run ./scripts/setup.ps1 to install the Electron binary first.');
 }
-run(require('electron'), [path.join(tmp, 'build'), ...(task === 'smoke' ? ['--brainrot-smoke'] : [])], task === 'dev' ? 0 : 120_000);
+run(require('electron'), [path.join(tmp, 'build'), ...(task === 'smoke' ? ['--brainrot-smoke'] : task === 'fixtures' ? ['--brainrot-fixtures'] : [])], task === 'dev' ? 0 : 120_000);
