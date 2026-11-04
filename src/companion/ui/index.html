@@ -13,8 +13,14 @@
     <h1>Claude Brainrot</h1>
     <p>Импортируйте собственные видео WebM или MP4. Звук выключен по умолчанию.</p>
     <p id="notice" role="status"></p>
+    <div id="global-controls" class="controls" aria-label="Все слоты">
+      <button data-action="pause">Пауза всем</button>
+      <button data-action="resume">Продолжить всем</button>
+      <button data-action="next">Следующее всем</button>
+      <button data-action="shuffle">Перемешать всем</button>
+    </div>
     <div id="slots" aria-label="Локальные видео"></div>
   </main>
-  <script src="renderer.js"></script>
+  <script type="module" src="renderer.js"></script>
 </body>
 </html>

@@ -1,6 +1,6 @@
 # Claude Brainrot: архитектура Phase 0
 
-Решение от 2026-11-04. Статус: реализованы окно/bootstrap (#3), локальная библиотека с непрозрачными ID, preload и streaming protocol (#4, [проверки и ограничения](PHASE1-MEDIA.md)). Общий playback core и host adapters остаются планом. Требования: три независимых зацикленных локальных видео, mute по умолчанию, shuffle/pause/resume/next/import, Windows сначала, ноль дополнительных модельных вызовов при воспроизведении.
+Решение от 2026-11-04. Статус: реализованы окно/bootstrap (#3), локальная библиотека с непрозрачными ID, preload и streaming protocol (#4, [проверки и ограничения](PHASE1-MEDIA.md)). Общий playback core реализован как независимый ES module `src/companion/ui/playback.mjs` (#5, [поведение и проверки](PHASE1-PLAYBACK.md)); host adapters остаются планом. Требования: три независимых зацикленных локальных видео, mute по умолчанию, shuffle/pause/resume/next/import, Windows сначала, ноль дополнительных модельных вызовов при воспроизведении.
 
 ## Проверенная основа и границы
 
@@ -16,7 +16,7 @@
 
 ## Технический стек
 
-- TypeScript, HTML/CSS без UI-фреймворка: три `HTMLVideoElement`, простые кнопки, локальные шрифты. Чистый playback state без зависимости от хоста.
+- TypeScript, HTML/CSS без UI-фреймворка: три `HTMLVideoElement`, простые кнопки, локальные шрифты. Playback controller — чистый ES module без зависимости от хоста, с переданным HTMLVideoElement.
 - Electron: единый Chromium-декодер, собственное обычное окно, файловый импорт и ограниченный preload IPC. Цена выбора — размер пакета и потребление памяти; измерить в Phase 1. Tauri не выбран из-за вариативности системных WebView, а не из-за отсутствия video.
 - Node.js 24.22.1 LTS, npm 11.6.2, Electron 45.2.2, TypeScript 7.0.2; версии и integrity закреплены в manifest/lockfile и bootstrap. Встроенный `node:test` для чистой логики, отдельный реальный Electron smoke для окна. [Проверки bootstrap](PHASE1-BOOTSTRAP.md); packaged проверки появятся позже.
 - Python 3.10+ standard library только для текущих dev-инструментов skills; не требовать Python от конечного пользователя.

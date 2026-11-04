@@ -1,4 +1,5 @@
 import { test } from 'node:test';
+import { PlaybackSlot, controlAll } from '../src/companion/ui/playback.mjs';
 import assert from 'node:assert/strict';
 import path from 'node:path';
 import { createRequire } from 'node:module';
@@ -7,6 +8,89 @@ import { mkdir, mkdtemp, writeFile, readFile, unlink, utimes, symlink } from 'no
 const require = createRequire(import.meta.url);
 const { runtimePaths } = require('../.TMP/build/companion/paths.js');
 const { MediaLibrary } = require('../.TMP/build/companion/media.js');
+
+class Video extends EventTarget {
+  paused = true;
+  error = null;
+  currentTime = 0;
+  starts = [];
+  set src(value) { this.url = value; this.error = null; this.currentTime = 0; }
+  get src() { return this.url; }
+  play() {
+    this.starts.push({ muted: this.muted, loop: this.loop });
+    this.paused = false; this.dispatchEvent(new Event('playing'));
+    return this.pending ?? Promise.resolve();
+  }
+  pause() { this.paused = true; this.dispatchEvent(new Event('pause')); }
+  load() { this.error = null; this.currentTime = 0; }
+  removeAttribute() { this.url = undefined; }
+}
+const playlist = ['a', 'b', 'c'].map(id => ({ id, name: id, url: `brainrot-media://library/${id}` }));
+const slot = () => new PlaybackSlot(new Video());
+
+test('three slots start muted/looping and local/global controls preserve independence', async () => {
+  const slots = [slot(), slot(), slot()];
+  slots.forEach(s => s.setPlaylist(playlist));
+  assert.ok(slots.every(s => s.state === 'playing' && s.video.starts[0].muted && s.video.starts[0].loop));
+  slots[0].pause(); slots[0].next();
+  assert.equal(slots[0].state, 'paused');
+  assert.equal(slots[0].item.id, 'b');
+  assert.ok(slots.slice(1).every(s => s.state === 'playing' && s.item.id === 'a'));
+  controlAll(slots, 'pause');
+  assert.ok(slots.every(s => s.video.paused));
+  controlAll(slots, 'next');
+  assert.ok(slots.every(s => s.video.paused));
+  controlAll(slots, 'resume');
+  assert.ok(slots.every(s => !s.video.paused && s.wantsPlay));
+  slots[0].video.error = { code: 3 }; slots[0].video.dispatchEvent(new Event('error'));
+  assert.equal(slots[0].state, 'error');
+  assert.ok(slots.slice(1).every(s => s.state === 'playing'));
+  slots[0].next(); assert.equal(slots[0].state, 'playing');
+});
+
+test('empty/single lists, cyclic next, nonrepeating shuffle and playlist replacement', () => {
+  const s = slot();
+  s.pause(); s.next(); s.next(true); s.resume();
+  assert.equal(s.state, 'empty'); assert.equal(s.video.starts.length, 0);
+  s.setPlaylist(playlist.slice(0, 1));
+  s.video.currentTime = 2; s.next(true);
+  assert.equal(s.item.id, 'a'); assert.equal(s.video.currentTime, 0);
+  s.setPlaylist(playlist); s.next(); assert.equal(s.item.id, 'b');
+  s.video.currentTime = 1;
+  s.setPlaylist([...playlist, playlist[0]]);
+  assert.equal(s.item.id, 'b'); assert.equal(s.items.length, 3); assert.equal(s.video.currentTime, 1);
+  for (const random of [0, .2, .99]) {
+    s.random = () => random;
+    const before = s.item.id; s.next(true); assert.notEqual(s.item.id, before);
+  }
+  s.setPlaylist(playlist.slice(2)); assert.equal(s.item.id, 'c');
+  s.next(); assert.equal(s.item.id, 'c');
+  s.setPlaylist([]); assert.equal(s.state, 'empty'); assert.equal(s.video.src, undefined);
+});
+
+test('late play rejection cannot override replacement, pause or a newer resume', async () => {
+  const s = slot();
+  let reject;
+  s.video.pending = new Promise((_, fail) => { reject = fail; });
+  s.setPlaylist(playlist);
+  s.pause(); s.video.pending = undefined; s.resume();
+  reject(new Error('old AbortError')); await Promise.resolve(); await Promise.resolve();
+  assert.equal(s.state, 'playing');
+  s.video.pending = Promise.reject(new Error('Autoplay denied'));
+  s.next(); await Promise.resolve();
+  assert.equal(s.state, 'blocked');
+  s.video.pending = undefined; s.resume(); assert.equal(s.state, 'playing');
+  s.setPlaylist([]); s.video.dispatchEvent(new Event('error')); assert.equal(s.state, 'empty');
+});
+
+test('resume on an already playing element settles without another playing event', async () => {
+  const s = slot();
+  s.setPlaylist(playlist);
+  await Promise.resolve();
+  s.video.play = () => Promise.resolve();
+  s.resume(); await Promise.resolve();
+  assert.equal(s.state, 'playing');
+});
 
 async function mediaFixture() {
   const parent = path.resolve('.TMP', 'unit-media');
@@ -25,6 +109,7 @@ test('import grants only opaque IDs for selected files, never filesystem paths',
   assert.equal(result.items.length, 1);
   assert.equal(result.errors.length, 2);
   const [item] = result.items;
+  assert.deepEqual(await library.register(file), item, 'Repeated import preserves media identity');
   assert.deepEqual(Object.keys(item), ['id', 'name', 'url']);
   assert.equal(item.name, path.basename(file));
   assert.ok(!JSON.stringify(result).includes(directory));

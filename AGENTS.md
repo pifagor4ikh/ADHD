@@ -53,7 +53,7 @@
 ## Текущее состояние
 
 - Проект: Claude Brainrot; публичный репозиторий `pifagor4ikh/CLAUDE-BRAINROT`, локальная папка остаётся `E:\ADHD`.
-- Выполнена Phase 0; начата Phase 1: окно Electron (#3), безопасный импорт локальных видео, preload/protocol и три собственных WebM fixtures (#4). Общий playback core ещё не реализован. Решения и ограничения — в `docs/ARCHITECTURE.md` и `docs/PHASE1-MEDIA.md`.
+- Выполнена Phase 0; начата Phase 1: окно Electron (#3), безопасный импорт локальных видео, preload/protocol и три собственных WebM fixtures (#4). Общий host-independent playback core и независимые/global controls реализованы (#5), проверки и поведение — в `docs/PHASE1-PLAYBACK.md`. Phase 1 целиком ещё не завершена. Решения и ограничения — в `docs/ARCHITECTURE.md` и `docs/PHASE1-MEDIA.md`.
 - Работать строго по `ROADMAP.md`: после каждого этапа обновить чеклисты, показать результат и остановиться до следующей команды. Не переходить к Phase 1 автоматически.
 - Перед интеграциями читать `brainrot-integration-research`; перед медиа — `brainrot-media-workflow`; перед проверками — `brainrot-plugin-verification`. Создавать и проверять новые skills для повторяемых специализированных задач, если подходящих нет.
 - Навыки редактировать в `skills/`, затем синхронизировать: `python -B scripts/sync_skills.py`. Копии в `.agents/skills/` и `.claude/skills/` не редактировать вручную.
