@@ -44,6 +44,8 @@ export class PlaybackSlot {
       await this.video.play();
       if (revision !== this.revision) return;
       if (!this.wantsPlay) this.video.pause();
+      this.state = this.video.error ? 'error' : this.wantsPlay ? 'playing' : 'paused';
+      this.notify();
     } catch {
       if (revision !== this.revision || !this.wantsPlay) return;
       this.state = this.video.error ? 'error' : 'blocked'; this.notify();

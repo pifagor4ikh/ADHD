@@ -83,6 +83,15 @@ test('late play rejection cannot override replacement, pause or a newer resume',
   s.setPlaylist([]); s.video.dispatchEvent(new Event('error')); assert.equal(s.state, 'empty');
 });
 
+test('resume on an already playing element settles without another playing event', async () => {
+  const s = slot();
+  s.setPlaylist(playlist);
+  await Promise.resolve();
+  s.video.play = () => Promise.resolve();
+  s.resume(); await Promise.resolve();
+  assert.equal(s.state, 'playing');
+});
+
 async function mediaFixture() {
   const parent = path.resolve('.TMP', 'unit-media');
   await mkdir(parent, { recursive: true });

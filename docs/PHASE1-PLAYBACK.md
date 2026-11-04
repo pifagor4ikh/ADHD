@@ -19,7 +19,7 @@ Global pause/resume/next/shuffle применяет соответствующу
 Windows 11 x64, Electron 45.2.2, Chromium 156.0.8078.80, embedded Node 24.22.2:
 
 - `node scripts/tasks.mjs typecheck` и `node scripts/tasks.mjs build` — успешно.
-- `node --test tests/runtime.test.mjs` — 8 тестов успешно, включая state transitions, независимость слотов, empty/single/replacement, shuffle и поздний rejected play.
+- `node --test tests/runtime.test.mjs` — 9 тестов успешно, включая state transitions, независимость слотов, empty/single/replacement, shuffle, поздний rejected play и повторный resume уже играющего элемента.
 - `node scripts/tasks.mjs smoke` — реальное видимое окно: три автозапущенных muted/loop видео и currentTime, переход через конец с loop, кнопки pause/resume, next/shuffle на паузе, импорт плейлиста, отмена, empty/single, decoder error и восстановление. Сохранены проверки Range/seeking, missing/unsupported/traversal и sandbox.
 - В smoke нет HTTP(S)-запросов renderer (`externalRequests: []`); запросы запрещены allowlist и CSP. Playback/core не содержит модельного клиента.
 - `python -B scripts/sync_skills.py --check` — успешно; `python -B -m unittest discover -s tests -v` — 4 теста успешно.

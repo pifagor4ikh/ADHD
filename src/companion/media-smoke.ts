@@ -87,6 +87,8 @@ export async function mediaSmoke(window: BrowserWindow, library: MediaLibrary, d
   assert(await evaluate(`document.querySelector('video').src !== ${JSON.stringify(beforeShuffle)}`), 'Shuffle avoids current item');
   await evaluate(`document.querySelector('#global-controls [data-action=resume]').click()`);
   await waitFor(`[...document.querySelectorAll('video')].every(v => !v.paused && v.currentTime > 0.1)`);
+  await evaluate(`document.querySelector('#global-controls [data-action=resume]').click()`);
+  await waitFor(`[...document.querySelectorAll('section p')].every(p => p.textContent === 'Воспроизводится')`);
   const response = await net.fetch(first, { headers: { range: 'bytes=5-19' } });
   assert(response.status === 206 && Buffer.from(await response.arrayBuffer()).equals((await readFile(files[0])).subarray(5, 20)), 'Range bytes');
   await evaluate(`document.querySelector('video').currentTime = 1.2`);
