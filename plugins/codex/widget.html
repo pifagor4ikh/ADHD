@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>Brainrot</title>
+<style>
+  body { font: 1rem system-ui; color-scheme: light dark; }
+  main { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; max-width: 42rem; }
+  video { display: block; width: 100%; aspect-ratio: 9 / 16; max-height: 13rem; background: #222; }
+  video:last-child { grid-column: span 2; aspect-ratio: 16 / 9; }
+  .controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: .75rem; }
+</style>
+<label>Choose at least three local videos <input type="file" multiple accept="video/*"></label>
+<div class="controls">
+  <button id="next" disabled>Next</button>
+  <button id="off" disabled>Off</button>
+</div>
+<p role="status">Choose local videos to start.</p>
+<main aria-label="Brainrot video slots">
+  <video aria-label="Left slot" muted loop playsinline></video>
+  <video aria-label="Right slot" muted loop playsinline></video>
+  <video aria-label="Bottom slot" muted loop playsinline></video>
+</main>
+<!-- widget-script -->
+</html>

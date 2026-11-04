@@ -4,6 +4,8 @@
 
 ## Phase 0 — Проверить встроенный UI
 
+[Срез проверок и ручные шаги](docs/research/embedded-ui-phase0.md).
+
 - [ ] Claude Code в Desktop на Windows — проверить поддерживаемую панель, воспроизведение локального видео и способ вызова ([#11](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/11)).
 - [ ] Codex desktop на Windows — проверить те же возможности именно в Codex ([#14](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/14)).
 
@@ -13,6 +15,8 @@
 
 - [ ] Claude Code ([#12](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/12)).
 - [ ] Codex ([#15](https://github.com/pifagor4ikh/CLAUDE-BRAINROT/issues/15)).
+
+Локальные прототипы готовы к проверке: Claude предоставляет команду статуса, Codex отдаёт виджет по MCP stdio. Воспроизведение в desktop-хостах остаётся **UNVERIFIED**, поэтому пункты выше открыты. [Запуск и проверки](docs/PLUGIN-PROTOTYPES.md).
 
 Для каждого прототипа проверить три одновременных локальных видео, loop, mute по умолчанию и простое ручное управление в подтверждённой раскладке.
 
