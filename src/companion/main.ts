@@ -35,10 +35,12 @@ app.whenReady().then(async () => {
   protocol.handle('brainrot-media', request => library.serve(request));
   const uiDirectory = path.join(__dirname, 'ui');
   const uiURL = pathToFileURL(path.join(uiDirectory, 'index.html')).href;
-  const allowedFiles = new Set(['index.html', 'styles.css', 'renderer.js'].map(file => pathToFileURL(path.join(uiDirectory, file)).href));
+  const allowedFiles = new Set(['index.html', 'styles.css', 'renderer.js', 'playback.mjs'].map(file => pathToFileURL(path.join(uiDirectory, file)).href));
+  const externalRequests: string[] = [];
   session.defaultSession.setPermissionRequestHandler((_webContents, _permission, callback) => callback(false));
   session.defaultSession.setPermissionCheckHandler(() => false);
   session.defaultSession.webRequest.onBeforeRequest((details, callback) => {
+    if (/^https?:/.test(details.url)) externalRequests.push(details.url);
     callback({ cancel: !allowedFiles.has(details.url) && !details.url.startsWith('brainrot-media://library/') });
   });
   window = new BrowserWindow({
@@ -58,7 +60,7 @@ app.whenReady().then(async () => {
     selecting = true;
     try {
       if (smoke) return await library.importFiles(smokeSelection);
-      const result = await dialog.showOpenDialog(window, { title: 'Импорт собственного видео', properties: ['openFile'],
+      const result = await dialog.showOpenDialog(window, { title: 'Импорт собственных видео', properties: ['openFile', 'multiSelections'],
         filters: [{ name: 'Локальные видео', extensions: ['webm', 'mp4'] }] });
       return await library.importFiles(result.canceled ? undefined : result.filePaths);
     } finally { selecting = false; }
@@ -82,6 +84,7 @@ app.whenReady().then(async () => {
   }
   if (smoke) {
     const media = await mediaSmoke(window, library, paths.fixtures, selected => { smokeSelection = selected; });
+    if (externalRequests.length) throw new Error('Playback attempted network access');
     const state = await window.webContents.executeJavaScript(`({
       title: document.title,
       heading: document.querySelector('h1')?.textContent,
@@ -104,7 +107,7 @@ app.whenReady().then(async () => {
     const screenshot = await window.webContents.capturePage();
     if (screenshot.isEmpty()) throw new Error('Empty desktop screenshot');
     writeFileSync(path.join(paths.root, 'smoke.png'), screenshot.toPNG());
-    writeFileSync(path.join(paths.root, 'smoke.json'), JSON.stringify({ state, media, actualPaths, versions: process.versions }, null, 2));
+    writeFileSync(path.join(paths.root, 'smoke.json'), JSON.stringify({ state, media, externalRequests, actualPaths, versions: process.versions }, null, 2));
     if (watchdog) clearTimeout(watchdog);
     app.quit();
   }

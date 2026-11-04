@@ -1,15 +1,18 @@
 :root { color-scheme: dark; font-family: "Segoe UI", sans-serif; background: #14161d; color: #eeeef4; }
 body { margin: 0; }
-main { max-width: 1100px; margin: 0 auto; padding: 24px; }
-h1 { font-size: 38px; letter-spacing: -1px; margin: 12px 0; }
-p { color: #acafbf; line-height: 1.6; }
+main { max-width: 1100px; margin: 0 auto; padding: 16px; }
+h1 { font-size: 30px; letter-spacing: -1px; margin: 8px 0; }
+p { color: #acafbf; line-height: 1.6; margin: 8px 0; }
 .eyebrow { color: #b6a4ff; font-size: 13px; }
 section { margin-top: 32px; padding: 24px; border: 1px solid #343747; border-radius: 16px; background: #1c1f29; }
 .status { color: #9de0bc; }
 #slots { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 section { margin-top: 8px; padding: 16px; }
 h2 { font-size: 16px; overflow-wrap: anywhere; }
-video { display: block; width: 100%; aspect-ratio: 4 / 3; background: #090b10; }
-button { background: #b6a4ff; color: #14161d; padding: 10px; border: 0; border-radius: 6px; cursor: pointer; }
+video { display: block; width: 100%; aspect-ratio: 16 / 10; object-fit: contain; background: #090b10; }
+button { background: #b6a4ff; color: #14161d; padding: 8px; border: 0; border-radius: 6px; cursor: pointer; }
 button:focus-visible { outline: 3px solid white; outline-offset: 3px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+select { width: 100%; padding: 8px; }
+button:disabled { opacity: .5; cursor: default; }
 @media (max-width: 650px) { #slots { grid-template-columns: 1fr; } }

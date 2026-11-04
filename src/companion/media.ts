@@ -23,7 +23,10 @@ export class MediaLibrary {
       const mime = ext === '.webm' && bytes.subarray(0, 4).equals(Buffer.from([0x1a, 0x45, 0xdf, 0xa3]))
         ? 'video/webm' : ext === '.mp4' && bytes.toString('ascii', 4, 8) === 'ftyp' ? 'video/mp4' : undefined;
       if (!mime) throw new Error('unsupported header');
-      const id = randomUUID();
+      // Reimporting the same unchanged file must not create shuffle duplicates.
+      const existing = [...this.files].find(([, item]) => item.path === canonical &&
+        item.size === stat.size && item.mtime === stat.mtimeMs);
+      const id = existing?.[0] ?? randomUUID();
       this.files.set(id, { path: canonical, size: stat.size, mtime: stat.mtimeMs, mime });
       return { id, name: path.basename(canonical), url: `brainrot-media://library/${id}` };
     } finally { await file.close(); }

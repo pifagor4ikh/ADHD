@@ -58,15 +58,35 @@ export async function mediaSmoke(window: BrowserWindow, library: MediaLibrary, d
   })`);
   for (let i = 0; i < 3; i++) {
     setSelection([files[i]]);
-    await evaluate(`document.querySelectorAll('button')[${i}].click()`);
+    await evaluate(`document.querySelectorAll('[data-action=import]')[${i}].click()`);
     await waitFor(`document.querySelectorAll('video')[${i}].readyState >= 2`);
   }
-  await evaluate(`Promise.all([...document.querySelectorAll('video')].map(video => video.play()))`);
-  await waitFor(`[...document.querySelectorAll('video')].every(video => video.currentTime > 0.3)`);
+  await waitFor(`[...document.querySelectorAll('video')].every(video => video.currentTime > 0.3 && !video.paused && video.muted && video.loop)`);
   await evaluate(`[...document.querySelectorAll('video')].forEach(video => video.pause())`);
   const metadata = await evaluate(`[...document.querySelectorAll('video')].map(v => ({src: v.src, width: v.videoWidth, height: v.videoHeight, muted: v.muted, time: v.currentTime}))`);
   assert(metadata.every((item: { width: number; muted: boolean }) => item.width === 320 && item.muted), 'Metadata/mute');
   const first = metadata[0].src;
+  // Exercise the actual UI controls against Chromium's media elements.
+  await evaluate(`document.querySelector('#global-controls [data-action=resume]').click()`);
+  await waitFor(`[...document.querySelectorAll('video')].every(v => !v.paused)`);
+  await evaluate(`document.querySelector('section [data-action=pause]').click()`);
+  const independent = await evaluate(`({time: document.querySelector('video').currentTime,
+    others: [...document.querySelectorAll('video')].slice(1).every(v => !v.paused)})`);
+  await evaluate(`new Promise(resolve => setTimeout(resolve, 250))`);
+  assert(independent.others && await evaluate(`document.querySelector('video').paused && Math.abs(document.querySelector('video').currentTime - ${independent.time}) < 0.05`), 'Independent pause');
+  await evaluate(`document.querySelector('#global-controls [data-action=pause]').click()`);
+  setSelection(files);
+  await evaluate(`document.querySelector('[data-action=import]').click()`);
+  await waitFor(`!document.querySelector('[data-action=import]').disabled`);
+  assert(await evaluate(`document.querySelector('select').options.length >= 3 && document.querySelector('video').paused`), 'Playlist import preserves pause');
+  const beforeNext = await evaluate(`document.querySelector('video').src`);
+  await evaluate(`document.querySelector('section [data-action=next]').click()`);
+  assert(await evaluate(`document.querySelector('video').src !== ${JSON.stringify(beforeNext)} && document.querySelector('video').paused`), 'Next while paused');
+  const beforeShuffle = await evaluate(`document.querySelector('video').src`);
+  await evaluate(`document.querySelector('section [data-action=shuffle]').click()`);
+  assert(await evaluate(`document.querySelector('video').src !== ${JSON.stringify(beforeShuffle)}`), 'Shuffle avoids current item');
+  await evaluate(`document.querySelector('#global-controls [data-action=resume]').click()`);
+  await waitFor(`[...document.querySelectorAll('video')].every(v => !v.paused && v.currentTime > 0.1)`);
   const response = await net.fetch(first, { headers: { range: 'bytes=5-19' } });
   assert(response.status === 206 && Buffer.from(await response.arrayBuffer()).equals((await readFile(files[0])).subarray(5, 20)), 'Range bytes');
   await evaluate(`document.querySelector('video').currentTime = 1.2`);
@@ -74,10 +94,14 @@ export async function mediaSmoke(window: BrowserWindow, library: MediaLibrary, d
   setSelection(undefined);
   const canceled = await evaluate('window.brainrot.importVideos()');
   assert(canceled.canceled && canceled.items.length === 0, 'Cancel result');
+  const beforeCancel = await evaluate(`document.querySelector('video').src`);
+  await evaluate(`document.querySelector('[data-action=import]').click()`);
+  await waitFor(`!document.querySelector('[data-action=import]').disabled`);
+  assert(await evaluate(`document.querySelector('video').src === ${JSON.stringify(beforeCancel)}`), 'Cancel preserves playlist selection');
   const corrupt = path.join(directory, 'corrupt.webm');
   await writeFile(corrupt, Buffer.concat([Buffer.from([0x1a, 0x45, 0xdf, 0xa3]), Buffer.alloc(128)]));
   setSelection([corrupt]);
-  await evaluate(`document.querySelectorAll('button')[2].click()`);
+  await evaluate(`document.querySelectorAll('[data-action=import]')[2].click()`);
   await waitFor(`document.querySelectorAll('video')[2].error !== null`);
   assert(await evaluate(`document.querySelectorAll('section p')[2].textContent.includes('повреждено')`), 'Visible decoder error');
   const unsupported = path.join(directory, 'unsupported.txt');
@@ -92,17 +116,28 @@ export async function mediaSmoke(window: BrowserWindow, library: MediaLibrary, d
   assert((await library.serve(new Request(removed.url))).status === 404, 'Removed registered file');
   assert((await library.serve(new Request('brainrot-media://library/%2e%2e%2fsecret'))).status === 404, 'Traversal');
   assert((await library.serve(new Request(first, { headers: { range: 'bytes=999999999-' } }))).status === 416, 'Invalid range');
-  await evaluate(`Promise.all([...document.querySelectorAll('video')].slice(0, 2).map(v => { v.currentTime = 0; return v.play(); }))`);
-  await waitFor(`[...document.querySelectorAll('video')].slice(0, 2).every(v => v.currentTime > 0.3 && !v.error)`);
+  await waitFor(`[...document.querySelectorAll('video')].slice(0, 2).every(v => v.currentTime > 0.3 && !v.paused && !v.error)`);
   // Restore third slot for the screenshot, proving recovery after a decoder error.
   setSelection([files[2]]);
-  await evaluate(`document.querySelectorAll('button')[2].click()`);
+  await evaluate(`document.querySelectorAll('[data-action=import]')[2].click()`);
   await waitFor(`document.querySelectorAll('video')[2].readyState >= 2`);
-  await evaluate(`document.querySelectorAll('video')[2].play()`);
   await waitFor(`document.querySelectorAll('video')[2].currentTime > 0.3`);
-  await waitFor(`[...document.querySelectorAll('video')].every(v => v.ended && !v.error)`);
+  // Observe actual wraparound instead of ended: all elements now loop continuously.
+  await evaluate(`[...document.querySelectorAll('video')].forEach(v => { v.currentTime = v.duration - 0.15; })`);
+  await waitFor(`[...document.querySelectorAll('video')].every(v => v.currentTime < 0.8 && !v.paused && !v.error && v.loop)`);
   await evaluate(`Promise.all([...document.querySelectorAll('video')].map(v => { v.currentTime = 0; return v.play(); }))`);
   await waitFor(`[...document.querySelectorAll('video')].every(v => v.currentTime > 0.3)`);
+  await evaluate(`document.querySelector('section [data-action=clear]').click()`);
+  assert(await evaluate(`!document.querySelector('video').hasAttribute('src') && document.querySelector('select').options.length === 0`), 'Empty playlist');
+  await evaluate(`document.querySelector('section [data-action=next]').click(); document.querySelector('section [data-action=shuffle]').click()`);
+  setSelection([files[0]]);
+  await evaluate(`document.querySelector('[data-action=import]').click()`);
+  await waitFor(`document.querySelector('video').currentTime > 0.3`);
+  const single = await evaluate(`document.querySelector('video').src`);
+  await evaluate(`document.querySelector('section [data-action=shuffle]').click()`);
+  await waitFor(`document.querySelector('video').currentTime > 0.1`);
+  assert(await evaluate(`document.querySelector('video').src === ${JSON.stringify(single)}`), 'Single item restart');
   return { metadata, range: true, seeking: true, canceled: true, corrupt: true, missing: true,
-    unsupported: true, traversal: true, independentErrors: true, recovery: true, decodedToEnd: true };
+    unsupported: true, traversal: true, independentErrors: true, recovery: true, loopWraparound: true,
+    independentPause: true, globalControls: true, next: true, shuffle: true, empty: true, single: true };
 }
