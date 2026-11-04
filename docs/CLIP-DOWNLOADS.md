@@ -1,5 +1,7 @@
 # Поиск и загрузка клипов
 
+Для первой настройки используй [одобренный каталог #7](STARTER-MEDIA.md): `node scripts/download-clips.mjs docs/starter-clips.json`. Он содержит только три проверенных pressure washing оригинала. Статус остальных категорий и локальный импорт описаны в отчёте; satisfying-подборка ниже остаётся отдельной.
+
 ```powershell
 node scripts/find-clips.mjs "pressure washing" 3
 ```

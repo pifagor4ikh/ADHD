@@ -1,0 +1,137 @@
+{
+  "checkedOn": "2026-11-04",
+  "allowedHosts": [
+    "upload.wikimedia.org"
+  ],
+  "categories": [
+    {
+      "category": "subway surfers",
+      "status": "local-import",
+      "assetIds": [],
+      "reason": "No approved downloadable file found; import only a recording the user is entitled to use."
+    },
+    {
+      "category": "soap cutting",
+      "status": "local-import",
+      "assetIds": [],
+      "reason": "No approved original found; kinetic sand and pottery are not substitutes for soap."
+    },
+    {
+      "category": "carpet cleaning",
+      "status": "local-import",
+      "assetIds": [],
+      "reason": "No approved carpet footage found; pressure washing is listed as a separate category."
+    },
+    {
+      "category": "pressure washing",
+      "status": "approved",
+      "assetIds": [
+        "d046d812b5fcae4f09b8fa7b711ce68f6072633772d03b56a14c53ee4784f8f4",
+        "1658bd45ea9c744c1acfa42586592815208a6c07f4538ec704a7e5bf3a0a5fb4",
+        "e6d7b3b335332c883dd33ad725b3e7dae6f6da62b3181ec7d9f213db39f29e51"
+      ]
+    },
+    {
+      "category": "minecraft parkour",
+      "status": "local-import",
+      "optional": true,
+      "assetIds": [],
+      "reason": "No approved downloadable file found; own recordings must comply with Minecraft usage guidelines and third-party rights."
+    }
+  ],
+  "assets": [
+    {
+      "title": "File:Kärcher K3.550 pressure washing using a Dirtblaster wand attachment.webm",
+      "category": "pressure washing",
+      "creator": "Pondguru; edit by Veikk0.ma",
+      "attribution": "Pondguru",
+      "source": "https://commons.wikimedia.org/wiki/File:K%C3%A4rcher_K3.550_pressure_washing_using_a_Dirtblaster_wand_attachment.webm",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/4/47/K%C3%A4rcher_K3.550_pressure_washing_using_a_Dirtblaster_wand_attachment.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license": "https://creativecommons.org/licenses/by/3.0",
+      "permission": "CC BY permits copying, redistribution and adaptation with attribution and a license link; download the original from Wikimedia Commons, not from YouTube/Flickr.",
+      "mime": "video/webm",
+      "sha1": "75f40889c84e47b20aa30b419273904cb3c5c81d",
+      "durationSeconds": 109.848,
+      "repositoryFile": "media/starter/pressure-washing-stone.webm",
+      "sha256": "d046d812b5fcae4f09b8fa7b711ce68f6072633772d03b56a14c53ee4784f8f4",
+      "bytes": 20749879,
+      "checkedOn": "2026-11-04",
+      "changes": "Unmodified copy of the Commons original; upstream edits credited to Veikk0.ma where applicable.",
+      "licenseReview": {
+        "reviewer": "Satdeep Gill",
+        "date": "2023-08-22",
+        "original": "https://www.youtube.com/watch?v=UQ2Oe1rCj1I",
+        "evidence": "https://commons.wikimedia.org/w/index.php?title=File%3AK%C3%A4rcher%20K3.550%20pressure%20washing%20using%20a%20Dirtblaster%20wand%20attachment.webm&oldid=1034498746"
+      },
+      "deliveryPolicy": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+      "video": {
+        "codec": "vp9",
+        "width": 1280,
+        "height": 720,
+        "audio": true
+      }
+    },
+    {
+      "title": "File:Pressure washing concrete driveway.webm",
+      "category": "pressure washing",
+      "creator": "Decorative Concrete Kingdom",
+      "attribution": "Decorative Concrete Kingdom",
+      "source": "https://commons.wikimedia.org/wiki/File:Pressure_washing_concrete_driveway.webm",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/2/2d/Pressure_washing_concrete_driveway.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license": "https://creativecommons.org/licenses/by/2.0",
+      "permission": "CC BY permits copying, redistribution and adaptation with attribution and a license link; download the original from Wikimedia Commons, not from YouTube/Flickr.",
+      "mime": "video/webm",
+      "sha1": "c809c8cbaa2b4fdc39647c5b954491777247c354",
+      "durationSeconds": 23.023,
+      "repositoryFile": "media/starter/pressure-washing-driveway.webm",
+      "sha256": "1658bd45ea9c744c1acfa42586592815208a6c07f4538ec704a7e5bf3a0a5fb4",
+      "bytes": 4387058,
+      "checkedOn": "2026-11-04",
+      "changes": "Unmodified copy of the Commons original; upstream edits credited to Veikk0.ma where applicable.",
+      "licenseReview": {
+        "reviewer": "Explicit",
+        "date": "2017-11-24",
+        "original": "https://www.flickr.com/photos/decorativeconcrete/6308121144/",
+        "evidence": "https://commons.wikimedia.org/w/index.php?title=File%3APressure%20washing%20concrete%20driveway.webm&oldid=474575878"
+      },
+      "deliveryPolicy": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+      "video": {
+        "codec": "vp8",
+        "width": 320,
+        "height": 240,
+        "audio": true
+      }
+    },
+    {
+      "title": "File:Pressure washer rotary attachment in slow motion.webm",
+      "category": "pressure washing",
+      "creator": "andycivil; edit by Veikk0.ma",
+      "attribution": "andycivil from YouTube",
+      "source": "https://commons.wikimedia.org/wiki/File:Pressure_washer_rotary_attachment_in_slow_motion.webm",
+      "download": "https://upload.wikimedia.org/wikipedia/commons/f/f9/Pressure_washer_rotary_attachment_in_slow_motion.webm?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=original",
+      "license": "https://creativecommons.org/licenses/by/3.0",
+      "permission": "CC BY permits copying, redistribution and adaptation with attribution and a license link; download the original from Wikimedia Commons, not from YouTube/Flickr.",
+      "mime": "video/webm",
+      "sha1": "e81db7aeb16375560d370089463c6b03a5b5d7e0",
+      "durationSeconds": 91.726,
+      "repositoryFile": "media/starter/pressure-washer-slow-motion.webm",
+      "sha256": "e6d7b3b335332c883dd33ad725b3e7dae6f6da62b3181ec7d9f213db39f29e51",
+      "bytes": 9960775,
+      "checkedOn": "2026-11-04",
+      "changes": "Unmodified copy of the Commons original; upstream edits credited to Veikk0.ma where applicable.",
+      "licenseReview": {
+        "reviewer": "Satdeep Gill",
+        "date": "2023-08-22",
+        "original": "https://www.youtube.com/watch?v=2K4shURxA28",
+        "evidence": "https://commons.wikimedia.org/w/index.php?title=File%3APressure%20washer%20rotary%20attachment%20in%20slow%20motion.webm&oldid=1246723022"
+      },
+      "deliveryPolicy": "https://commons.wikimedia.org/wiki/Commons:Reusing_content_outside_Wikimedia",
+      "video": {
+        "codec": "vp9",
+        "width": 1280,
+        "height": 720,
+        "audio": false
+      }
+    }
+  ]
+}

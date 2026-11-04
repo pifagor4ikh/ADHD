@@ -41,6 +41,8 @@ jobs:
         run: node scripts/tasks.mjs build
       - name: Unit tests
         run: node --test tests/runtime.test.mjs
+      - name: Approved starter catalog
+        run: node --test tests/starter-clips.test.mjs tests/download-clips.test.mjs
       - name: Real Electron window smoke test
         run: node scripts/tasks.mjs smoke
       - name: Skill discovery
