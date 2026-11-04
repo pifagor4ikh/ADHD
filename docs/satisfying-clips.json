@@ -16,7 +16,8 @@
       "mime": "video/webm",
       "sha1": "75f40889c84e47b20aa30b419273904cb3c5c81d",
       "verifiedSha256": "d046d812b5fcae4f09b8fa7b711ce68f6072633772d03b56a14c53ee4784f8f4",
-      "durationSeconds": 109.848
+      "durationSeconds": 109.848,
+      "repositoryFile": "media/starter/pressure-washing-stone.webm"
     },
     {
       "title": "File:Pressure washing concrete driveway.webm",
@@ -30,7 +31,8 @@
       "mime": "video/webm",
       "sha1": "c809c8cbaa2b4fdc39647c5b954491777247c354",
       "verifiedSha256": "1658bd45ea9c744c1acfa42586592815208a6c07f4538ec704a7e5bf3a0a5fb4",
-      "durationSeconds": 23.023
+      "durationSeconds": 23.023,
+      "repositoryFile": "media/starter/pressure-washing-driveway.webm"
     },
     {
       "title": "File:Pressure washer rotary attachment in slow motion.webm",
@@ -44,7 +46,8 @@
       "mime": "video/webm",
       "sha1": "e81db7aeb16375560d370089463c6b03a5b5d7e0",
       "verifiedSha256": "e6d7b3b335332c883dd33ad725b3e7dae6f6da62b3181ec7d9f213db39f29e51",
-      "durationSeconds": 91.726
+      "durationSeconds": 91.726,
+      "repositoryFile": "media/starter/pressure-washer-slow-motion.webm"
     },
     {
       "title": "File:Very soothing and relaxing ｜ Oddly Satisfying kineticsand 421.webm",
@@ -72,7 +75,8 @@
       "mime": "video/webm",
       "sha1": "ed326227961b2496a8c559f9237b8307e8c64dc1",
       "verifiedSha256": "c2539ed123a143bb2800049d9b0cdd2bdb233de6f090fb4b982079a33df4172d",
-      "durationSeconds": 49.706
+      "durationSeconds": 49.706,
+      "repositoryFile": "media/starter/pottery-wheel.webm"
     },
     {
       "title": "File:Poterie Katiola.webm",
@@ -86,7 +90,8 @@
       "mime": "video/webm",
       "sha1": "191751cc8a4464a7bbe45a37dd7d6aca8d409044",
       "verifiedSha256": "f867ad9b768c99864d03257e6efb2abe6fa76d16c5045d4713ab0bb18b354e3e",
-      "durationSeconds": 4.24
+      "durationSeconds": 4.24,
+      "repositoryFile": "media/starter/clay-shaping-katiola.webm"
     }
   ]
 }
