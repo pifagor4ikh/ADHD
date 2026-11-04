@@ -11,3 +11,5 @@
 - [Roadmap](ROADMAP.md)
 - [Архитектура](docs/ARCHITECTURE.md)
 - [Навыки разработки](docs/SKILLS.md)
+
+- [Автоматический поиск и загрузка клипов по категории](docs/CLIP-DOWNLOADS.md)

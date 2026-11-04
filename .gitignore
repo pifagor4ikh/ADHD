@@ -17,9 +17,10 @@ Desktop.ini
 __pycache__/
 *.py[cod]
 node_modules/
-# Local media belongs in .TMP; keep binaries out of Git
+# Local media belongs in .TMP. The reviewed starter set is versioned.
 *.mp4
 *.webm
+!/media/starter/*.webm
 *.mov
 *.mkv
 *.avi
